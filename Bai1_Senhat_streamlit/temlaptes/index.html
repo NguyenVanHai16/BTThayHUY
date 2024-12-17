@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sense HAT Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe6f2; /* Màu nền hồng nhạt */
+            color: #800040; /* Màu chữ tím đậm */
+        }
+        h1 {
+            color: #ff007f; /* Màu hồng đậm */
+        }
+        .data-box {
+            margin: 20px auto;
+            padding: 15px;
+            border: 2px solid #ff99cc; /* Màu viền hồng nhạt */
+            display: inline-block;
+            background-color: #fff0f5; /* Nền hộp dữ liệu hồng nhạt */
+            border-radius: 10px; /* Bo góc hộp dữ liệu */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+        }
+        p {
+            font-size: 1.2em; /* Tăng kích thước chữ */
+        }
+        strong {
+            color: #d60073; /* Màu chữ hồng nổi bật */
+        }
+    </style>
+</head>
+<body>
+    <h1>Hiển thị Dữ Liệu Sense HAT</h1>
+    <div class="data-box">
+        <p><strong>Nhiệt độ:</strong> <span id="nhietdo">Đang tải...</span>°C</p>
+        <p><strong>Độ ẩm:</strong> <span id="doam">Đang tải...</span>%</p>
+        <p><strong>Trạng thái Joystick:</strong> <span id="joystick">Đang tải...</span></p>
+    </div>
+
+    <script>
+        // Hàm gọi API và cập nhật dữ liệu
+        function layDuLieu() {
+            fetch("/api/data")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("nhietdo").innerText = data.nhiet_do;
+                    document.getElementById("doam").innerText = data.do_am;
+                    document.getElementById("joystick").innerText = data.joystick.join(", ");
+                });
+        }
+
+        // Tự động cập nhật dữ liệu mỗi 2 giây
+        setInterval(layDuLieu, 2000);
+        layDuLieu();
+    </script>
+</body>
+</html>
